@@ -1,4 +1,4 @@
 # Opengl
 OpenGL Learning
 
-[Basic Triangle on new Wndow created by help of GLFW]  (../../tree/ a08adadda78bf59ae28a88a0872da75995aebf53)
+[Basic Triangle on new Wndow created by help of GLFW]  (../../tree/f7a58077c2a7cf9498d23549fdd765589de1ab5d)
