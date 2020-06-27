@@ -7,7 +7,4 @@ OpenGL Learning
 
 
 [Writing First Shader and Rendering Blue Triangle](../../tree/68b99c782e0dd8473ddb812657fdbee02b6d2949)
-<img id = clip src="https://github.com/devanshugarg1994/Opengl/blob/master/ScreenShoots/BlueTriangle.png" />
-#clip {
-  clip: rect(0, 100px, 200px, 0);
-}
+<img id = clip src="https://github.com/devanshugarg1994/Opengl/blob/master/ScreenShoots/BlueTriangle.png  width = 700 height = 150" />
