@@ -5,4 +5,9 @@ OpenGL Learning
 <br/>
 <img src="https://github.com/devanshugarg1994/Opengl/blob/master/ScreenShoots/Traingle.png" />
 
+<br/>
+<br/>
+<br/>
+[Writing First Shader and Rendering Blue Triangle](../../tree/ 68b99c782e0dd8473ddb812657fdbee02b6d2949)
 
+<img src="https://github.com/devanshugarg1994/Opengl/blob/master/ScreenShoots/BlueTriangle.png" />
