@@ -1,5 +1,10 @@
 ﻿  Application.cpp
-C:\Users\devanshugarg\Desktop\OPGL\OpenGL\OpenGL\src\Application.cpp(157,5): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\devanshugarg\Desktop\OPGL\OpenGL\OpenGL\src\Application.cpp(148,5): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  IndexBuffer.cpp
+  Renderer.cpp
+  VertexArray.cpp
+  VertexBuffer.cpp
+  Generating Code...
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
 glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\devanshugarg\Desktop\OPGL\OpenGL\Debug\vc120.pdb'; linking object as if no debug info
