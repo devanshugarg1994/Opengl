@@ -10,7 +10,7 @@
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
-
+#include "Textutre.h"
 #include "Shader.h"
 int main(void)
 {
@@ -25,7 +25,7 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1000, 1000, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -41,10 +41,10 @@ int main(void)
     std::cout << glGetString(GL_VERSION) << std::endl;
     /* Loop until the user closes the window */
     float position[] = {
-       -0.5f, -0.5f, //0
-        0.5f, -0.5f, //1
-        0.5f,  0.5f, //2
-       -0.5f,  0.5f, //3
+       -0.5f, -0.5f,  0.0f, 0.0f,  //0
+        0.5f, -0.5f,  1.0f, 0.0f, //1
+        0.5f,  0.5f,  1.0f, 1.0f,  //2
+       -0.5f,  0.5f,  0.0f, 1.0f  //3
 
     };
 
@@ -53,6 +53,9 @@ int main(void)
         0, 1, 2,
         2, 3 , 0
     };
+
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
     // Creating Vertex Array Explicitly for core Version
@@ -63,8 +66,9 @@ int main(void)
     // Creating Vertex Array
     VeretexArray va;
     // Creating Vertex Buffer
-    VertexBuffer vb(position, 4 * 2 * sizeof(float));
+    VertexBuffer vb(position, 4 * 4 * sizeof(float));
     VertexBufferLayout layout;
+    layout.Push<float>(2);
     layout.Push<float>(2);
     va.AddBuffer(vb, layout);
 
@@ -83,13 +87,16 @@ int main(void)
   /*  GLCall(int location = glGetUniformLocation(shader, "u_color"));
     ASSERT(location != -1);
     GLCall(glUniform4f(location, 0.4f, 0.3f, 0.8f, 0.1));*/
-    shader.SetUniform4f("u_color", 0.4f, 0.3f, 0.8f, 0.1);
 
     // Unbinding buffers
 
     //GLCall(glUseProgram(0));
     //GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
     //GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
+    Texture texture("res/textures/dice.png");
+    texture.Bind();
+    shader.SetUniform1i("u_textutre", 0);
 
     va.UnBind();
     vb.UnBind();
@@ -111,7 +118,6 @@ int main(void)
         //GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
 
         shader.Bind();
-        shader.SetUniform4f("u_color", r, 0.3f, 0.8f, 1.0f);
      
         // checking Error 
 		//GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
