@@ -1,3 +1,8 @@
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include<iostream>
@@ -12,6 +17,11 @@
 #include "VertexArray.h"
 #include "Textutre.h"
 #include "Shader.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
+
 int main(void)
 {
     GLFWwindow* window;
@@ -25,7 +35,7 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1000, 1000, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -41,10 +51,10 @@ int main(void)
     std::cout << glGetString(GL_VERSION) << std::endl;
     /* Loop until the user closes the window */
     float position[] = {
-       -0.5f, -0.5f,  0.0f, 0.0f,  //0
-        0.5f, -0.5f,  1.0f, 0.0f, //1
-        0.5f,  0.5f,  1.0f, 1.0f,  //2
-       -0.5f,  0.5f,  0.0f, 1.0f  //3
+       -50.0f, -50.0f,  0.0f, 0.0f,  //0
+        50.0f, -50.0f,  1.0f, 0.0f, //1
+        50.0f,  50.0f,  1.0f, 1.0f,  //2
+       -50.0f,  50.0f,  0.0f, 1.0f  //3
 
     };
 
@@ -75,6 +85,12 @@ int main(void)
 
     // Creating Index Buffer
     IndexBuffer ib(indicies, 6);
+
+    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+
+
+
     Shader shader("res/shaders/Basic.Shader");
     shader.Bind();
 
@@ -103,41 +119,60 @@ int main(void)
     ib.UnBind();
     shader.UnBind();
     Renderer renderer;
-    //Animation
-    float r = 0.0f;
-    float increment = 0.05f;
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    
+    glm::vec3 translation(200, 200, 0);
+
+
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
-
-
-
-        //GLCall(glUseProgram(shader));
-        //GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+        glm::mat4 mvp = proj * view * model;
 
         shader.Bind();
+        shader.SetUnifromMat4f("u_MVP", mvp);
+
      
-        // checking Error 
-		//GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
 
         renderer.Draw(va, ib, shader);
         /* Swap front and back buffers */
 
-        if (r > 1.0f) {
-            increment = -0.05f;
-        }
-        else if ( r < 0.0f){
-            increment = 0.05f;
+
+        {
+
+
+            ImGui::SliderFloat3("Translation", &translation.x, 0.0f, 960.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         }
 
-        r += increment;
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
 
         /* Poll for and process events */
         glfwPollEvents();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwTerminate();
     return 0;
 }
